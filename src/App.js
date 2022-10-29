@@ -1,7 +1,9 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-
-
+import Footer from "./Components/Footer";
+import BlogList from "./Components/BlogList";
+import BlogListCard from "./Components/BlogListCard";
+import OptionBar from "./Components/OptionBar";
 
 const sampleBlogs = [
   {
@@ -41,89 +43,66 @@ const sampleBlogs = [
   },
 ];
 
-const BlogList = (props) => {
-  console.log("BlogList:")
-  console.log(props)
-  return (
-    <div>
-      {/* <div className="pic-list">
-      {props.pics.map((pic, index)=>{
-        return 
-      })}
-
-      </div> */}
-      <div className="blog-list">
-        {props.blogs.map((blog, index) => {
-          return <BlogListCard key={index} blog={blog} />
-        })}
-
-      </div>
-    </div>
-
-  )
-}
-const BlogListCard = (props) => {
-  //console.log("BlogList:")
-  //console.log(props)
-
-  return (
-    <div className="blog-list-card">
-      <h2>{props.blog.title}</h2>
-      <p>{props.blog.author}</p>
-      <p>{props.blog.text}</p>
-    </div>
-  )
-};
-
-const PicListCard = (props) => {
-  return (
-    <div className="pic-list-card">{props.pic}</div>
-  )
-}
-
 const urlEndpoint = process.env.REACT_APP_URL_ENDPOINT;
-const urlEndpoint2 = process.env.REACT_APP_PICS_URL_ENDPOINT;
 
 const App = () => {
-  const [blogs, setBlogs] = useState([...sampleBlogs])
-  const [pics, setPics] = useState('yo')
+  const [blogs, setBlogs] = useState([...sampleBlogs]);
+  const [urlParamString, setUrlParamString] = useState("");
+
+  const generateUrlParams = (limit, page, sortBy, order) => {}
 
   useEffect(() => {
-    //console.log()
+    // useEffect should usually come after setting useState
+
     const fetchBlogs = async () => {
       //console.log('urlEndpoint', urlEndpoint)
-      //console.log()
-      const result = await fetch(`${urlEndpoint}/blogs`)
+
+      const result = await fetch(`${urlEndpoint}/blogs`);
       //console.log('result', result)
-      //console.log()
-      const blogs = await result.json()
-      setBlogs(blogs)
 
-    }
-    fetchBlogs()
-  }, [])
-
-  // useEffect(() => {
-  //   const fetchPics = async () => {
-  //     console.log('hi')
-  //     const result = await fetch(`${urlEndpoint2}`)
-  //     console.log('result')
-  //     console.log(result)
-  //     const pics = await result.json()
-  //     setPics(pics)
-
-  //   }
-  //   fetchPics()
-  // }, [])
+      const fetchedBlogs = await result.json();
+      setBlogs(fetchedBlogs);
+    };
+    fetchBlogs();
+  }, []);
 
   return (
     <div className="App-header">
-      <h1>Nonsense</h1>
-      <BlogList blogs={blogs} pics={pics} />
+      <OptionBar />
+      <BlogList blogs={blogs} />
+      <Footer />
     </div>
   );
-}
-
-
+};
 
 export default App;
+/*
+# Fullstack Intro Day 2
+
+## .env files
+- _Reminder_: .env files hold our environment variables. When we start a server/terminal process, the variables in a .env file are loaded into the global scope and are accessable using the process.env.VARIABLE_NAME syntax. When we create a .env file in our file system, it will go on the top level of our repository; i.e, the same file level as the package.json. 
+  - _Note_: After you create a .env file in your folder, you need to restart the terminal process for your environment variables to be loaded into the scope.
+- _Requirement_: React applications REQUIRE environment variables to be prepended with the string REACT_APP. I.E. All environment variables you will create for react MUST start with REACT_APP. Everything after the REACT_APP prefix is up to you to name for your variable.
+- All environment variables coming from the .env file will be strings
+
+## useEffect
+- _Convention_: (and due to variable scope), useEffect goes into the body of a component (above the JSX return) and below the state variables.
+- The starting definition for useEffect will always be:
+  - useEffect(()=>{}, [])
+  - The first argument is the effect function and the second argument is the dependency array.
+- _Convention_: If there is an async function that is going to be invoked in the useEffect, the function definition should go inside of the useEffect effect function. The async function is then invoked inside of the useEffect effect function after the definition.
+
+## React Component Composition
+- The top most code for react components will be the props or destructured props.
+- After the destructured props comes the state variables.
+- After the state variables comes the useEffects.
+- After the useEffects comes any handler functions or pre-processing code for variables that are rendered in the JSX.
+- Last comes the JSX return statement.
+
+## fetch
+- The fetch API is a globally available API to browser applications. I.E. If you are running a browser client app such as a react app or a jQuery app, the fetch API will be available to you. The fetch API is a lightweight module that allows you to make HTTP requests to specific urls along with optional parameters.
+  - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+- For react applications, your fetch async functions/invocations are going to live inside of an async function that lives inside of a useEffect.
+- _Convention_: Since await fetch() returns the response data, we assign that response data to a variable called result.
+- If the response to the fetch() has an OK status/status code (such as 200), the payload/body of the fetch will be retrieved by calling the awaited .json() method on result. Usually we assign that to a variable whose name represents the data we are expecting.
+ */
