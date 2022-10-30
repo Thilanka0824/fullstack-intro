@@ -49,26 +49,31 @@ const App = () => {
   const [blogs, setBlogs] = useState([...sampleBlogs]);
   const [urlParamString, setUrlParamString] = useState("");
 
-  const generateUrlParams = (limit, page, sortBy, order) => {}
+  const generateUrlParams = (limit, page, sortBy, order) => {
+    let urlParams = `?limit=${limit}&page=${page}&sortBy=${sortBy}&order=${order}`;
+    console.log("urlParams", urlParams);
+
+    setUrlParamString(urlParams);
+  };
 
   useEffect(() => {
     // useEffect should usually come after setting useState
 
     const fetchBlogs = async () => {
       //console.log('urlEndpoint', urlEndpoint)
-
-      const result = await fetch(`${urlEndpoint}/blogs`);
+      const result = await fetch(`${urlEndpoint}/blogs${urlParamString}`);
       //console.log('result', result)
 
       const fetchedBlogs = await result.json();
       setBlogs(fetchedBlogs);
     };
     fetchBlogs();
-  }, []);
+  }, [urlParamString]);
+
 
   return (
     <div className="App-header">
-      <OptionBar />
+      <OptionBar generateUrlParams={generateUrlParams}/>
       <BlogList blogs={blogs} />
       <Footer />
     </div>

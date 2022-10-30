@@ -59,15 +59,15 @@
 .footer {
   font-weight: lighter;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .circle-img {
   border-radius: 50%;
   /* border: 2px solid rgb(255, 255, 255); */
-  width: 120px;
-  height: 120px;
-  margin: 20px;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,4 +83,20 @@
   margin: 50px 80px 15px 80px;
   max-width: 800px;
 
+}
+
+.author-text {
+  font-weight: 200;
+  margin: 10px;
+  padding: 5px;
+  
+  
+}
+
+.author-text:hover {
+  background-color: #bbbe06;
+  border-radius: 10px;
+  padding: 2px 5px 2px 5px;
+  color: black;
+  
 }
