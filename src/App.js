@@ -4,6 +4,8 @@ import Footer from "./Components/Footer";
 import BlogList from "./Components/BlogList";
 import BlogListCard from "./Components/BlogListCard";
 import OptionBar from "./Components/OptionBar";
+import { createBrowserRouter } from "react-router-dom";
+
 
 const sampleBlogs = [
   {
@@ -70,10 +72,12 @@ const App = () => {
     fetchBlogs();
   }, [urlParamString]);
 
+  
 
   return (
     <div className="App-header">
-      <OptionBar generateUrlParams={generateUrlParams}/>
+    
+      <OptionBar generateUrlParams={generateUrlParams} />
       <BlogList blogs={blogs} />
       <Footer />
     </div>
